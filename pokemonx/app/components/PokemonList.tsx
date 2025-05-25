@@ -1,4 +1,3 @@
-// components/PokemonList.tsx
 'use client';
 
 import { useState } from 'react';
@@ -29,20 +28,21 @@ export default function PokemonList({ pokemon }: Props) {
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center', p: 2 }}>
       {pokemon.map((pokemon) => (
-        <Card key={pokemon.id} sx={{ width: 200 }}>
+        <Card key={pokemon.id} sx={{ width: 220 }}>
           <CardMedia
             component="img"
             height="140"
             image={pokemon.sprites.front_default}
             alt={pokemon.name}
+            sx={{ objectFit: 'contain', backgroundColor: '#f2f2f2' }}
           />
           <CardContent>
-            <Typography variant="h6" textTransform="capitalize">
+            <Typography variant="h6" textTransform="capitalize" gutterBottom>
               #{pokemon.id} {pokemon.name}
             </Typography>
-            <Button variant="contained" onClick={() => setSelectedPokemon(pokemon)}>
+            <Button variant="contained" fullWidth onClick={() => setSelectedPokemon(pokemon)}>
               Saber más
             </Button>
           </CardContent>
@@ -64,7 +64,7 @@ export default function PokemonList({ pokemon }: Props) {
             boxShadow: 24,
             p: 4,
             maxWidth: 400,
-            borderRadius: 1,
+            borderRadius: 2,
             outline: 'none',
           }}
         >
@@ -78,17 +78,18 @@ export default function PokemonList({ pokemon }: Props) {
               >
                 #{selectedPokemon.id} {selectedPokemon.name}
               </Typography>
-              <img
+              <Box
+                component="img"
                 src={selectedPokemon.sprites.front_default}
                 alt={selectedPokemon.name}
-                style={{ width: '100%', marginBottom: 16 }}
+                sx={{ width: '100%', mb: 2, objectFit: 'contain' }}
               />
               <Typography>Altura: {selectedPokemon.height}</Typography>
               <Typography>Peso: {selectedPokemon.weight}</Typography>
               <Typography>
                 Tipos: {selectedPokemon.types.map((t) => t.type.name).join(', ')}
               </Typography>
-              <Box textAlign="right" mt={2}>
+              <Box mt={3} textAlign="right">
                 <Button variant="outlined" onClick={() => setSelectedPokemon(null)}>
                   Cerrar
                 </Button>
