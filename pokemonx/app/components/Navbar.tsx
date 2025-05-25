@@ -8,11 +8,12 @@ import {
   MenuItem,
   IconButton,
   useTheme,
+  Button
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import translations from '../lib/translations';
 
 const generations = [
@@ -26,6 +27,7 @@ export default function Navbar({ lang, mode }: { lang: string; mode: 'light' | '
   const theme = useTheme();
   const t = translations[lang];
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -39,8 +41,10 @@ export default function Navbar({ lang, mode }: { lang: string; mode: 'light' | '
     <AppBar position="static" color="default" sx={{ backgroundColor: theme.palette.background.paper }}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <Link href={`/${lang}`} style={{ textDecoration: 'none', color: theme.palette.text.primary }}>
-            PokemonX
+          <Link href={`/${lang}`} style={{ textDecoration: 'none' }}>
+            <Typography component="span" sx={{ color: 'text.primary' }}>
+              PokemonX
+            </Typography>
           </Link>
         </Typography>
         <Box>
@@ -57,11 +61,10 @@ export default function Navbar({ lang, mode }: { lang: string; mode: 'light' | '
           >
             {generations.map((gen) => (
               <MenuItem key={gen.labelKey} onClick={handleClose}>
-                <Link
-                  href={`/${lang}${gen.path}`}
-                  style={{ textDecoration: 'none', color: theme.palette.text.primary }}
-                >
-                  {t[gen.labelKey]}
+                <Link href={`/${lang}${gen.path}`} style={{ textDecoration: 'none' }}>
+                  <Typography component="span" sx={{ color: 'text.primary' }}>
+                    {t[gen.labelKey]}
+                  </Typography>
                 </Link>
               </MenuItem>
             ))}
@@ -71,3 +74,4 @@ export default function Navbar({ lang, mode }: { lang: string; mode: 'light' | '
     </AppBar>
   );
 }
+
