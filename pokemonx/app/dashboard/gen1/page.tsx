@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import PokemonList from '../components/PokemonList';
+import PokemonList from '../../components/PokemonList';
 
 export default function Gen1Page() {
   const [pokemon, setPokemon] = useState<any[]>([]);
