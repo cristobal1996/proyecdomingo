@@ -1,102 +1,38 @@
-// components/PokemonList.tsx
 'use client';
-
-import { useState } from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Button,
-  Modal,
-} from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 interface Pokemon {
   id: number;
   name: string;
   sprites: { front_default: string };
-  height: number;
-  weight: number;
-  types: { type: { name: string } }[];
 }
 
 interface Props {
-  pokemon: Pokemon[];
+  pokemon: Pokemon;
+  onClose: () => void;
 }
 
-export default function PokemonList({ pokemon }: Props) {
-  const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
+export default function PokemonModal({ pokemon, onClose }: Props) {
+  const router = useRouter();
+
+  function handleClose() {
+    onClose();
+    router.push('/'); 
+  }
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-      {pokemon.map((pokemon) => (
-        <Card key={pokemon.id} sx={{ width: 200 }}>
-          <CardMedia
-            component="img"
-            height="140"
-            image={pokemon.sprites.front_default}
-            alt={pokemon.name}
-          />
-          <CardContent>
-            <Typography variant="h6" textTransform="capitalize">
-              #{pokemon.id} {pokemon.name}
-            </Typography>
-            <Button variant="contained" onClick={() => setSelectedPokemon(pokemon)}>
-              Saber más
-            </Button>
-          </CardContent>
-        </Card>
-      ))}
-
-      <Modal
-        open={!!selectedPokemon}
-        onClose={() => setSelectedPokemon(null)}
-        aria-labelledby="pokemon-modal-title"
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            maxWidth: 400,
-            borderRadius: 1,
-            outline: 'none',
-          }}
-        >
-          {selectedPokemon && (
-            <>
-              <Typography
-                id="pokemon-modal-title"
-                variant="h6"
-                gutterBottom
-                textTransform="capitalize"
-              >
-                #{selectedPokemon.id} {selectedPokemon.name}
-              </Typography>
-              <img
-                src={selectedPokemon.sprites.front_default}
-                alt={selectedPokemon.name}
-                style={{ width: '100%', marginBottom: 16 }}
-              />
-              <Typography>Altura: {selectedPokemon.height}</Typography>
-              <Typography>Peso: {selectedPokemon.weight}</Typography>
-              <Typography>
-                Tipos: {selectedPokemon.types.map((t) => t.type.name).join(', ')}
-              </Typography>
-              <Box textAlign="right" mt={2}>
-                <Button variant="outlined" onClick={() => setSelectedPokemon(null)}>
-                  Cerrar
-                </Button>
-              </Box>
-            </>
-          )}
-        </Box>
-      </Modal>
-    </Box>
+    <div style={{
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+      backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
+      justifyContent: 'center', alignItems: 'center'
+    }}>
+      <div style={{ backgroundColor: '#fff', padding: '2rem', borderRadius: 8, width: 300 }}>
+        <h2>{pokemon.name}</h2>
+        <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+        <p>ID: {pokemon.id}</p>
+        <button onClick={handleClose}>Cerrar</button>
+      </div>
+    </div>
   );
 }
+
